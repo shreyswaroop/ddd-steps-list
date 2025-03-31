@@ -19,20 +19,15 @@ export class GithubRpgContributor extends DDDSuper(I18NMixin(LitElement)) {
   }
 
   constructor() {
-    super();
+    ssuper();
+    this.items = []
+    this.org=''
+    this.repo=''
     this.title = "";
-    this.t = this.t || {};
+    this.limit = 25;
     this.t = {
-      ...this.t,
-      title: "Title",
+      title: "title",
     };
-    this.registerLocalization({
-      context: this,
-      localesPath:
-        new URL("./locales/github-rpg-contributor.ar.json", import.meta.url).href +
-        "/../",
-      locales: ["ar", "es", "hi", "zh"],
-    });
   }
 
   // Lit reactive properties
@@ -40,6 +35,10 @@ export class GithubRpgContributor extends DDDSuper(I18NMixin(LitElement)) {
     return {
       ...super.properties,
       title: { type: String },
+      items: { type: Array },
+      org: { type: String },
+      repo: { type: String },
+      limit: { type: Number },
     };
   }
 
@@ -60,16 +59,86 @@ export class GithubRpgContributor extends DDDSuper(I18NMixin(LitElement)) {
       h3 span {
         font-size: var(--github-rpg-contributor-label-font-size, var(--ddd-font-size-s));
       }
+      .rpg-wrapper {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: var(--ddd-spacing-4);
+      }
+      .character-card {
+          padding: var(--ddd-spacing-3);
+          text-align: center;
+          min-width: 176px;
+      }
+      .user-card {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          border-radius: var(--ddd-border-radius);
+          background-color: var(--ddd-theme-accent);
+          box-shadow: var(--ddd-box-shadow);
+      }
+
     `];
+  }
+
+  updated(changedProperties) {
+    super.updated?.(changedProperties);
+    if (changedProperties.has("org") || changedProperties.has("repo")) {
+      this.getContributors();
+    }
+  }
+
+  getContributors() {
+    const url = `https://api.github.com/repos/${this.org}/${this.repo}/contributors`;
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        this.items = data;
+      })
+      .catch((error) => {
+        console.error("Error loading contributors:", error);
+      });
   }
 
   // Lit render the HTML
   render() {
     return html`
-<div class="wrapper">
-  <h3><span>${this.t.title}:</span> ${this.title}</h3>
-  <slot></slot>
-</div>`;
+      <div class="container">
+        <div class="top-section">
+          <h3>
+            Repo:
+            <a
+              href="https://github.com/${this.org}/${this.repo}"
+              >${this.org}/${this.repo}</a>
+          </h3>
+        </div>
+        <slot></slot>
+        <div class="contributors-list">
+          ${this.items
+            .filter((user, idx) => idx < this.limit)
+            .map(
+              (user) => html`
+                <div class="contributor-card">
+                  <rpg-character seed="${user.login}"></rpg-character>
+                  <div class="user-meta">
+                    <a href="https://github.com/${user.login}" target="_blank">
+                      ${user.login}
+                    </a>
+                    Contributions: ${user.contributions}
+                  </div>
+                </div>
+              `
+            )}
+        </div>
+      </div>
+    `;
   }
 
   /**
