@@ -19,7 +19,7 @@ export class GithubRpgContributor extends DDDSuper(I18NMixin(LitElement)) {
   }
 
   constructor() {
-    ssuper();
+    super();
     this.items = []
     this.org=''
     this.repo=''
@@ -52,34 +52,41 @@ export class GithubRpgContributor extends DDDSuper(I18NMixin(LitElement)) {
         background-color: var(--ddd-theme-accent);
         font-family: var(--ddd-font-navigation);
       }
-      .wrapper {
-        margin: var(--ddd-spacing-2);
+      .step-card {
+        border: 2px solid var(--ddd-color-5, #ccc);
+        border-radius: 12px;
         padding: var(--ddd-spacing-4);
-      }
-      h3 span {
-        font-size: var(--github-rpg-contributor-label-font-size, var(--ddd-font-size-s));
-      }
-      .rpg-wrapper {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: var(--ddd-spacing-4);
-      }
-      .character-card {
-          padding: var(--ddd-spacing-3);
-          text-align: center;
-          min-width: 176px;
-      }
-      .user-card {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          border-radius: var(--ddd-border-radius);
-          background-color: var(--ddd-theme-accent);
-          box-shadow: var(--ddd-box-shadow);
+        margin-bottom: var(--ddd-spacing-4);
+        background-color: var(--ddd-theme-background, #fff);
+        box-shadow: var(--ddd-box-shadow);
       }
 
+      .step-header {
+        display: flex;
+        align-items: center;
+        gap: var(--ddd-spacing-2);
+        margin-bottom: var(--ddd-spacing-2);
+      }
+
+      .step-number {
+        font-weight: bold;
+        font-size: var(--ddd-font-size-xl, 1.25rem);
+        color: var(--ddd-color-7, #333);
+      }
+
+      h3 {
+        margin: 0;
+        font-size: var(--ddd-font-size-l, 1.125rem);
+      }
+
+      .step-content {
+        font-size: var(--ddd-font-size-s, 1rem);
+      }
+
+      a {
+        color: var(--ddd-theme-link-color, #1e407c);
+        text-decoration: underline;
+      }
     `];
   }
 
@@ -110,35 +117,30 @@ export class GithubRpgContributor extends DDDSuper(I18NMixin(LitElement)) {
   // Lit render the HTML
   render() {
     return html`
-      <div class="container">
-        <div class="top-section">
-          <h3>
-            Repo:
-            <a
-              href="https://github.com/${this.org}/${this.repo}"
-              >${this.org}/${this.repo}</a>
-          </h3>
-        </div>
-        <slot></slot>
-        <div class="contributors-list">
-          ${this.items
-            .filter((user, idx) => idx < this.limit)
-            .map(
-              (user) => html`
-                <div class="contributor-card">
-                  <rpg-character seed="${user.login}"></rpg-character>
-                  <div class="user-meta">
-                    <a href="https://github.com/${user.login}" target="_blank">
-                      ${user.login}
-                    </a>
-                    Contributions: ${user.contributions}
-                  </div>
-                </div>
-              `
-            )}
-        </div>
+      <div class="top-section">
+        <h3>
+          Repo:
+          <a href="https://github.com/${this.org}/${this.repo}" target="_blank">
+            ${this.org}/${this.repo}
+          </a>
+        </h3>
       </div>
+      ${this.items.slice(0, this.limit).map((contributor, index) => html`
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">Step ${index + 1}</span>
+            <h3>${contributor.login}</h3>
+          </div>
+          <div class="step-content">
+            <p>Contributions: ${contributor.contributions}</p>
+            <a href="https://github.com/${contributor.login}" target="_blank">
+              View GitHub Profile
+            </a>
+          </div>
+        </div>
+      `)}
     `;
+    
   }
 
   /**
