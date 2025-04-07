@@ -5,7 +5,7 @@
   <base href="/">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="Description" content="Demo page for github-rpg-contributor" />
+  <meta name="Description" content="Demo page for ddd-steps-list" />
 
   <style>
     :root, html, body {
@@ -15,34 +15,34 @@
     #demo {
       margin: var(--ddd-spacing-4);
     }
-    github-rpg-contributor {
+    ddd-steps-list {
       margin: var(--ddd-spacing-4);
       border-radius: var(--ddd-radius-2, 12px);
       box-shadow: var(--ddd-box-shadow, 0 2px 4px black);
     }
-    github-rpg-contributor:hover {
+    ddd-steps-list:hover {
       box-shadow: var(--ddd-boxShadow-sm);
     }
   </style>
-  <title>github-rpg-contributor</title>
+  <title>ddd-steps-list</title>
 </head>
 
 <body>
   <div id="demo">
     <h2>Default usage</h2>
-    <github-rpg-contributor org="open-wc" repo="open-wc"></github-rpg-contributor>
+    <ddd-steps-list org="open-wc" repo="open-wc"></ddd-steps-list>
 
 
     <h2>Slot content example</h2>
-    <github-rpg-contributor>
+    <ddd-steps-list>
       <p>This is some slotted content.</p>
-    </github-rpg-contributor>
+    </ddd-steps-list>
 
 
 
   </div>
 
   <!-- Load the component -->
-  <script type="module" src="./github-rpg-contributor.js"></script>
+  <script type="module" src="./ddd-steps-list.js"></script>
 </body>
 </html>
