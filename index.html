@@ -1,48 +1,25 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <base href="/">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="Description" content="Demo page for ddd-steps-list" />
-
-  <style>
-    :root, html, body {
-      margin: 0;
-      padding: 0;
-    }
-    #demo {
-      margin: var(--ddd-spacing-4);
-    }
-    ddd-steps-list {
-      margin: var(--ddd-spacing-4);
-      border-radius: var(--ddd-radius-2, 12px);
-      box-shadow: var(--ddd-box-shadow, 0 2px 4px black);
-    }
-    ddd-steps-list:hover {
-      box-shadow: var(--ddd-boxShadow-sm);
-    }
-  </style>
-  <title>ddd-steps-list</title>
-</head>
-
-<body>
-  <div id="demo">
-    <h2>Default usage</h2>
-    <ddd-steps-list org="open-wc" repo="open-wc"></ddd-steps-list>
-
-
-    <h2>Slot content example</h2>
-    <ddd-steps-list>
-      <p>This is some slotted content.</p>
-    </ddd-steps-list>
-
-
-
-  </div>
-
-  <!-- Load the component -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Steps List Demo</title>
   <script type="module" src="./ddd-steps-list.js"></script>
+</head>
+<body>
+  <ddd-steps-list ddd-primary>
+    <ddd-steps-list-item>
+      <h3>Submit Your Application</h3>
+      <p>Pick a starting campus and send in your application.</p>
+    </ddd-steps-list-item>
+    <ddd-steps-list-item>
+      <h3>Begin Your Coursework</h3>
+      <p>Start classes and connect with your adviser early.</p>
+    </ddd-steps-list-item>
+    <ddd-steps-list-item>
+      <h3>Prepare to Transfer</h3>
+      <p>Work on your transition to another campus in year three.</p>
+    </ddd-steps-list-item>
+  </ddd-steps-list>
 </body>
 </html>
